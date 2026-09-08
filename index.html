@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script src="dados.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Um pedido especial ❤️</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffb6c9, #ffe0e9);
+        }
+
+        .coracoes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .coracao {
+            position: absolute;
+            bottom: -50px;
+            color: rgba(255, 70, 130, 0.6);
+            font-size: 25px;
+            animation: subir 6s linear infinite;
+        }
+
+        .coracao:nth-child(1) { left: 10%; animation-delay: 0s; }
+        .coracao:nth-child(2) { left: 30%; animation-delay: 2s; }
+        .coracao:nth-child(3) { left: 55%; animation-delay: 1s; }
+        .coracao:nth-child(4) { left: 80%; animation-delay: 3s; }
+        .coracao:nth-child(5) { left: 90%; animation-delay: 4s; }
+
+        @keyframes subir {
+            from {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            to {
+                transform: translateY(-110vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .cartao {
+            position: relative;
+            z-index: 1;
+            width: min(90%, 400px);
+            padding: 35px 25px;
+            text-align: center;
+            background: white;
+            border-radius: 25px;
+            box-shadow: 0 15px 40px rgba(180, 50, 100, 0.2);
+        }
+
+        .emoji {
+            font-size: 60px;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            color: #c93670;
+            font-size: 27px;
+            line-height: 1.3;
+            margin: 10px 0;
+        }
+
+        p {
+            color: #8d6272;
+            font-size: 17px;
+            margin: 20px 0 30px;
+        }
+
+        .botoes {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            min-height: 55px;
+        }
+
+        button {
+            border: none;
+            padding: 15px 25px;
+            border-radius: 30px;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+
+        #sim {
+            background: #e94f88;
+            color: white;
+        }
+
+        #nao {
+            background: #ffe1eb;
+            color: #c93670;
+        }
+
+        .escondido {
+            display: none;
+        }
+
+        .mensagem-final {
+            animation: aparecer 0.6s ease;
+        }
+
+        .mensagem-final h1 {
+            font-size: 30px;
+        }
+
+        .confetes {
+            font-size: 35px;
+            margin-top: 20px;
+        }
+
+        @keyframes aparecer {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 400px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .cartao {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Corações decorativos -->
+    <div class="coracoes">
+        <div class="coracao">♥</div>
+        <div class="coracao">♡</div>
+        <div class="coracao">♥</div>
+        <div class="coracao">♡</div>
+        <div class="coracao">♥</div>
+    </div>
+
+    <!-- Cartão principal -->
+    <div class="cartao" id="cartao">
+
+        <div class="emoji">🥰</div>
+
+        <h1 id="pergunta"></h1>
+
+        <p id="mensagem">Pense com carinho... ♡</p>
+
+        <div class="botoes">
+            <button id="sim">SIM ❤️</button>
+            <button id="nao">NÃO</button>
+        </div>
+
+    </div>
+
+    <script>
+        const botaoSim = document.getElementById("sim");
+        const botaoNao = document.getElementById("nao");
+        const cartao = document.getElementById("cartao");
+        const mensagem = document.getElementById("mensagem");
+        const pergunta = document.getElementById("pergunta");
+
+        pergunta.innerHTML =
+            `${pretendente}, você aceita ser<br>minha namorada? ❤️<br><small>Com carinho, ${nome}</small>`;
+
+        // Quando clicar em SIM
+        botaoSim.addEventListener("click", function() {
+
+            cartao.innerHTML = `
+                <div class="mensagem-final">
+                    <div class="emoji">😍</div>
+
+                    <h1>EU SABIA, ${pretendente}! ❤️</h1>
+
+                    <p>
+                        ${pretendente}, você acaba de me fazer muito feliz! 🥹<br>
+                        Com carinho, ${nome}.
+                    </p>
+
+                    <div class="confetes">🎉 🎊 🎉</div>
+                </div>
+            `;
+
+            criarConfetes();
+        });
+
+        // Faz o botão NÃO fugir
+        function fugir() {
+
+            const largura = window.innerWidth;
+            const altura = window.innerHeight;
+
+            const x = Math.random() * (largura - 120);
+            const y = Math.random() * (altura - 70);
+
+            botaoNao.style.position = "fixed";
+            botaoNao.style.left = x + "px";
+            botaoNao.style.top = y + "px";
+        }
+
+        botaoNao.addEventListener("mouseenter", fugir);
+
+        // Também funciona no celular
+        botaoNao.addEventListener("touchstart", function(event) {
+            event.preventDefault();
+            fugir();
+        });
+
+        // Cria confetes simples
+        function criarConfetes() {
+
+            const emojis = ["🎉", "🎊", "❤️", "✨", "🥰"];
+
+            for (let i = 0; i < 30; i++) {
+
+                const confete = document.createElement("div");
+
+                confete.textContent =
+                    emojis[Math.floor(Math.random() * emojis.length)];
+
+                confete.style.position = "fixed";
+                confete.style.left = Math.random() * 100 + "vw";
+                confete.style.top = "-30px";
+                confete.style.fontSize = "25px";
+                confete.style.zIndex = "10";
+                confete.style.transition = "top 3s linear, opacity 3s";
+
+                document.body.appendChild(confete);
+
+                setTimeout(function() {
+                    confete.style.top = "110vh";
+                    confete.style.opacity = "0";
+                }, 50);
+
+                setTimeout(function() {
+                    confete.remove();
+                }, 3500);
+
+            }
+        }
+    </script>
+
+</body>
+</html>
